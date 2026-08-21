@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Solvian — Help & Support</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap');
+    
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Hind Siliguri', 'Noto Sans Arabic', system-ui, -apple-system, sans-serif;
+      background-color: #f8fafc;
+    }
+
+    /* RTL support for Arabic */
+    html[dir="rtl"] {
+      direction: rtl;
+      text-align: right;
+    }
+    html[dir="rtl"] .rtl-flip {
+      transform: scaleX(-1);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .screen-view {
+      display: none;
+    }
+    .screen-view.active {
+      display: block;
+      animation: fadeIn 0.16s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="text-slate-900 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white bg-slate-50">
+
+  <!-- ================= TOP BAR ================= -->
+  <!-- ‹   Help & Support                 🌐 -->
+  <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-2xs">
+    <div class="max-w-xl mx-auto px-4 h-14 flex items-center justify-between">
+      
+      <!-- Left: Back Button + Title -->
+      <div class="flex items-center gap-2.5">
+        <!-- ‹ Back Button -->
+        <button
+          onclick="navigateBack()"
+          id="top-back-btn"
+          class="w-9 h-9 -ml-1 rounded-xl flex items-center justify-center text-slate-700 hover:bg-slate-100 active:scale-95 transition-all cursor-pointer"
+          title="Back"
+          aria-label="Back"
+        >
+          <i data-lucide="chevron-left" class="w-6 h-6 rtl-flip"></i>
+        </button>
+
+        <!-- Help & Support Title -->
+        <h1 class="text-base sm:text-lg font-bold tracking-tight text-slate-900" id="top-bar-title">
+          Help & Support
+        </h1>
+      </div>
+
+      <!-- Right: Language Change Button (🌐) -->
+      <button
+        onclick="openLanguageModal()"
+        id="btn-lang-globe"
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-xs font-bold text-slate-800 transition-all cursor-pointer active:scale-95 shadow-2xs"
+        title="Language Change"
+      >
+        <span class="text-sm">🌐</span>
+        <span id="current-lang-name" class="text-indigo-700 font-extrabold">English</span>
+      </button>
+
+    </div>
+
+    <!-- ================= SUB TOP BAR (Shown on Screen 1, 2, 3) ================= -->
+    <!-- [ Help Center ]   [ FAQ ]   [ Report a Problem ] -->
+    <div id="sub-top-bar" class="bg-white border-t border-slate-100 px-4 py-0">
+      <div class="max-w-xl mx-auto grid grid-cols-3">
+        
+        <!-- Tab 1: Help Center (Selected by default) -->
+        <button
+          id="tab-btn-help-center"
+          onclick="navigateToMainTab('help-center')"
+          class="main-tab-btn py-3 text-center text-xs sm:text-sm font-bold transition-all border-b-2 border-indigo-600 text-indigo-600 cursor-pointer"
+        >
+          <span class="txt-subtab-help-center">Help Center</span>
+        </button>
+
+        <!-- Tab 2: FAQ -->
+        <button
+          id="tab-btn-faq"
+          onclick="navigateToMainTab('faq')"
+          class="main-tab-btn py-3 text-center text-xs sm:text-sm font-semibold transition-all border-b-2 border-transparent text-slate-500 hover:text-slate-900 cursor-pointer"
+        >
+          <span class="txt-subtab-faq">FAQ</span>
+        </button>
+
+        <!-- Tab 3: Report a Problem -->
+        <button
+          id="tab-btn-report"
+          onclick="navigateToMainTab('report')"
+          class="main-tab-btn py-3 text-center text-xs sm:text-sm font-semibold transition-all border-b-2 border-transparent text-slate-500 hover:text-slate-900 cursor-pointer"
+        >
+          <span class="txt-subtab-report">Report a Problem</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN APP CONTAINER ================= -->
+  <main class="flex-1 max-w-xl w-full mx-auto p-4 sm:p-5 space-y-6">
+
+    <!-- ==================================================== -->
+    <!-- SCREEN 1: HELP CENTER                                -->
+    <!-- ==================================================== -->
+    <section id="screen-help-center" class="screen-view active space-y-5">
+      
+      <!-- Hero Introduction -->
+      <div class="pt-2 text-center space-y-1">
+        <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 txt-hero-title">
+          How can we help?
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 font-medium txt-hero-desc">
+          Find answers, guides and solutions.
+        </p>
+      </div>
+
+      <!-- Search Help Box -->
+      <div class="relative">
+        <form onsubmit="event.preventDefault()" class="relative flex items-center">
+          <i data-lucide="search" class="absolute left-3.5 w-4 h-4 text-slate-400"></i>
+          <input
+            type="text"
+            id="help-center-search"
+            oninput="handleSearchArticles(this.value)"
+            placeholder="Search help articles..."
+            class="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 font-medium shadow-2xs"
+          />
+        </form>
+
+        <!-- Live Search Dropdown -->
+        <div id="search-live-dropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl border border-indigo-100 shadow-lg z-20 p-2 space-y-1 max-h-60 overflow-y-auto">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Popular Help -->
+      <div class="space-y-2.5">
+        <h3 class="text-xs font-bold text-slate-900 px-0.5 txt-popular-heading">
+          Popular Help
+        </h3>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs divide-y divide-slate-100 overflow-hidden">
+          
+          <!-- Card 1: Getting Started -->
+          <div
+            onclick="openTopicScreen('topic-getting-started')"
+            class="p-4 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer group"
+          >
+            <div class="flex items-start gap-3">
+              <span class="text-xl shrink-0">🚀</span>
+              <div>
+                <h4 class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors txt-pop-getting-started-title">
+                  Getting Started
+                </h4>
+                <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 txt-pop-getting-started-desc">
+                  Learn the basics of Solvian
+                </p>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all rtl-flip shrink-0"></i>
+          </div>
+
+          <!-- Card 2: Account & Login -->
+          <div
+            onclick="openTopicScreen('topic-account-login')"
+            class="p-4 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer group"
+          >
+            <div class="flex items-start gap-3">
+              <span class="text-xl shrink-0">🔐</span>
+              <div>
+                <h4 class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors txt-pop-account-title">
+                  Account & Login
+                </h4>
+                <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 txt-pop-account-desc">
+                  Account, sign-in and access
+                </p>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all rtl-flip shrink-0"></i>
+          </div>
+
+          <!-- Card 3: Features & Settings -->
+          <div
+            onclick="openTopicScreen('topic-features-settings')"
+            class="p-4 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer group"
+          >
+            <div class="flex items-start gap-3">
+              <span class="text-xl shrink-0">⚙️</span>
+              <div>
+                <h4 class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors txt-pop-features-title">
+                  Features & Settings
+                </h4>
+                <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 txt-pop-features-desc">
+                  Learn how Solvian works
+                </p>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all rtl-flip shrink-0"></i>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Browse Help Topics -->
+      <div class="space-y-2.5">
+        <h3 class="text-xs font-bold text-slate-900 px-0.5 txt-browse-heading">
+          Browse Help Topics
+        </h3>
+
+        <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
+          
+          <!-- Card 1: Privacy & Security -->
+          <div
+            onclick="openTopicScreen('topic-privacy-security')"
+            class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-300 active:scale-98 transition-all cursor-pointer flex items-center justify-between group"
+          >
+            <div class="space-y-1">
+              <span class="text-xl block">🔒</span>
+              <h4 class="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors txt-browse-privacy-title">
+                Privacy & Security
+              </h4>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all rtl-flip shrink-0"></i>
+          </div>
+
+          <!-- Card 2: Troubleshooting -->
+          <div
+            onclick="openTopicScreen('topic-troubleshooting')"
+            class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-300 active:scale-98 transition-all cursor-pointer flex items-center justify-between group"
+          >
+            <div class="space-y-1">
+              <span class="text-xl block">🛠</span>
+              <h4 class="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors txt-browse-troubleshoot-title">
+                Troubleshooting
+              </h4>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all rtl-flip shrink-0"></i>
+          </div>
+
+          <!-- Card 3: App & Features -->
+          <div
+            onclick="openTopicScreen('topic-app-features')"
+            class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-300 active:scale-98 transition-all cursor-pointer flex items-center justify-between group"
+          >
+            <div class="space-y-1">
+              <span class="text-xl block">📱</span>
+              <h4 class="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors txt-browse-app-title">
+                App & Features
+              </h4>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all rtl-flip shrink-0"></i>
+          </div>
+
+          <!-- Card 4: More Help -->
+          <div
+            onclick="openTopicScreen('topic-more-help')"
+            class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-300 active:scale-98 transition-all cursor-pointer flex items-center justify-between group"
+          >
+            <div class="space-y-1">
+              <span class="text-xl block">❓</span>
+              <h4 class="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors txt-browse-more-title">
+                More Help
+              </h4>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all rtl-flip shrink-0"></i>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Need more help? (Report a Problem Action) -->
+      <div class="pt-2 space-y-2">
+        <h3 class="text-xs font-bold text-slate-900 px-0.5 txt-need-more-heading">
+          Need more help?
+        </h3>
+
+        <div
+          onclick="navigateToMainTab('report')"
+          class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs hover:border-rose-300 active:bg-slate-50 transition-all cursor-pointer flex items-center justify-between group"
+        >
+          <div class="flex items-start gap-3">
+            <span class="text-xl shrink-0">🛠</span>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-rose-600 transition-colors txt-need-report-title">
+                Report a Problem
+              </h4>
+              <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 txt-need-report-desc">
+                Tell us what went wrong
+              </p>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-rose-600 group-hover:translate-x-0.5 transition-all rtl-flip shrink-0"></i>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- SCREEN 2: FAQ                                        -->
+    <!-- ==================================================== -->
+    <section id="screen-faq" class="screen-view space-y-5">
+      
+      <div class="pt-1">
+        <h2 class="text-lg sm:text-xl font-bold tracking-tight text-slate-900 txt-faq-main-title">
+          Frequently Asked Questions
+        </h2>
+      </div>
+
+      <!-- Search FAQs -->
+      <div class="relative">
+        <i data-lucide="search" class="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400"></i>
+        <input
+          type="text"
+          id="faq-search-input"
+          oninput="filterFaqList(this.value)"
+          placeholder="Search FAQs..."
+          class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:ring-2 focus:ring-indigo-500 font-medium shadow-2xs text-slate-900 placeholder:text-slate-400"
+        />
+      </div>
+
+      <!-- FAQ Group 1: General -->
+      <div class="space-y-2 faq-section-block" id="faq-group-general">
+        <h3 class="text-xs font-bold text-slate-900 px-0.5 txt-faq-cat-general">
+          General
+        </h3>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs divide-y divide-slate-100 overflow-hidden">
+          
+          <!-- Q1 -->
+          <div class="faq-item">
+            <button onclick="toggleFaqAccordion(this)" class="w-full p-3.5 sm:p-4 text-left flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-900 hover:bg-slate-50 cursor-pointer">
+              <span class="txt-faq-q1">What is Solvian?</span>
+              <span class="faq-toggle-icon text-lg text-slate-400 font-light leading-none ml-2 shrink-0">＋</span>
+            </button>
+            <div class="faq-answer hidden px-3.5 sm:px-4 pb-3.5 text-xs text-slate-600 leading-relaxed border-t border-slate-50 pt-2 bg-slate-50/50">
+              <p class="txt-faq-a1">Solvian is your comprehensive productivity and service platform designed to empower your daily workflows with fast, secure, and intuitive tools.</p>
+            </div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="faq-item">
+            <button onclick="toggleFaqAccordion(this)" class="w-full p-3.5 sm:p-4 text-left flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-900 hover:bg-slate-50 cursor-pointer">
+              <span class="txt-faq-q2">How do I get started?</span>
+              <span class="faq-toggle-icon text-lg text-slate-400 font-light leading-none ml-2 shrink-0">＋</span>
+            </button>
+            <div class="faq-answer hidden px-3.5 sm:px-4 pb-3.5 text-xs text-slate-600 leading-relaxed border-t border-slate-50 pt-2 bg-slate-50/50">
+              <p class="txt-faq-a2">Download or open the app, complete your initial account registration, verify your credentials, and start exploring tools from the home dashboard.</p>
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="faq-item">
+            <button onclick="toggleFaqAccordion(this)" class="w-full p-3.5 sm:p-4 text-left flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-900 hover:bg-slate-50 cursor-pointer">
+              <span class="txt-faq-q3">How do I change the language?</span>
+              <span class="faq-toggle-icon text-lg text-slate-400 font-light leading-none ml-2 shrink-0">＋</span>
+            </button>
+            <div class="faq-answer hidden px-3.5 sm:px-4 pb-3.5 text-xs text-slate-600 leading-relaxed border-t border-slate-50 pt-2 bg-slate-50/50">
+              <p class="txt-faq-a3">Tap the 🌐 globe icon in the top bar anytime to choose English, বাংলা, or العربية. The interface updates instantly.</p>
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="faq-item">
+            <button onclick="toggleFaqAccordion(this)" class="w-full p-3.5 sm:p-4 text-left flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-900 hover:bg-slate-50 cursor-pointer">
+              <span class="txt-faq-q4">How do I change my settings?</span>
+              <span class="faq-toggle-icon text-lg text-slate-400 font-light leading-none ml-2 shrink-0">＋</span>
+            </button>
+            <div class="faq-answer hidden px-3.5 sm:px-4 pb-3.5 text-xs text-slate-600 leading-relaxed border-t border-slate-50 pt-2 bg-slate-50/50">
+              <p class="txt-faq-a4">Go to your Profile and select Settings to adjust notifications, display themes, security preferences, and cloud sync options.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FAQ Group 2: Account & Privacy -->
+      <div class="space-y-2 faq-section-block" id="faq-group-account">
+        <h3 class="text-xs font-bold text-slate-900 px-0.5 txt-faq-cat-account">
+          Account & Privacy
+        </h3>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs divide-y divide-slate-100 overflow-hidden">
+          
+          <!-- Q5 -->
+          <div class="faq-item">
+            <button onclick="toggleFaqAccordion(this)" class="w-full p-3.5 sm:p-4 text-left flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-900 hover:bg-slate-50 cursor-pointer">
+              <span class="txt-faq-q5">How do I manage my account?</span>
+              <span class="faq-toggle-icon text-lg text-slate-400 font-light leading-none ml-2 shrink-0">＋</span>
+            </button>
+            <div class="faq-answer hidden px-3.5 sm:px-4 pb-3.5 text-xs text-slate-600 leading-relaxed border-t border-slate-50 pt-2 bg-slate-50/50">
+              <p class="txt-faq-a5">Open Settings > Account Management to update your email, linked phone number, password, or configure Two-Factor Authentication.</p>
+            </div>
+          </div>
+
+          <!-- Q6 -->
+          <div class="faq-item">
+            <button onclick="toggleFaqAccordion(this)" class="w-full p-3.5 sm:p-4 text-left flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-900 hover:bg-slate-50 cursor-pointer">
+              <span class="txt-faq-q6">How is my data protected?</span>
+              <span class="faq-toggle-icon text-lg text-slate-400 font-light leading-none ml-2 shrink-0">＋</span>
+            </button>
+            <div class="faq-answer hidden px-3.5 sm:px-4 pb-3.5 text-xs text-slate-600 leading-relaxed border-t border-slate-50 pt-2 bg-slate-50/50">
+              <p class="txt-faq-a6">Solvian uses TLS 1.3 encryption for data in transit and AES-256 for data at rest. We never share your private records with third parties.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FAQ Group 3: Troubleshooting -->
+      <div class="space-y-2 faq-section-block" id="faq-group-troubleshoot">
+        <h3 class="text-xs font-bold text-slate-900 px-0.5 txt-faq-cat-troubleshoot">
+          Troubleshooting
+        </h3>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs divide-y divide-slate-100 overflow-hidden">
+          
+          <!-- Q7 -->
+          <div class="faq-item">
+            <button onclick="toggleFaqAccordion(this)" class="w-full p-3.5 sm:p-4 text-left flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-900 hover:bg-slate-50 cursor-pointer">
+              <span class="txt-faq-q7">The app isn't working. What do I do?</span>
+              <span class="faq-toggle-icon text-lg text-slate-400 font-light leading-none ml-2 shrink-0">＋</span>
+            </button>
+            <div class="faq-answer hidden px-3.5 sm:px-4 pb-3.5 text-xs text-slate-600 leading-relaxed border-t border-slate-50 pt-2 bg-slate-50/50">
+              <p class="txt-faq-a7">Try closing and reopening the app, clear the cache from Phone Settings > Apps > Solvian, or switch to the "Report a Problem" tab to send a diagnostic report.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- SCREEN 3: REPORT A PROBLEM                           -->
+    <!-- ==================================================== -->
+    <section id="screen-report" class="screen-view space-y-4">
+      
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-4">
+        
+        <div class="border-b border-slate-100 pb-3">
+          <h2 class="text-base sm:text-lg font-bold text-slate-900 txt-report-main-title">
+            Report a Problem
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5 txt-report-main-subtitle">
+            Help us understand what went wrong.
+          </p>
+        </div>
+
+        <!-- Problem Form -->
+        <form id="solvian-report-form" onsubmit="handleProblemReportSubmit(event)" class="space-y-4">
+          
+          <!-- Problem Type -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1.5 txt-lbl-problem-type">
+              Problem Type *
+            </label>
+            <div class="relative">
+              <select
+                id="form-problem-type"
+                required
+                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 font-medium appearance-none cursor-pointer"
+              >
+                <option value="" disabled selected class="txt-opt-select-type">Select a problem type</option>
+                <option value="App Crash">App Crash</option>
+                <option value="Feature Not Working">Feature Not Working</option>
+                <option value="Login / Account">Login / Account</option>
+                <option value="Performance Issue">Performance Issue</option>
+                <option value="UI / Display Problem">UI / Display Problem</option>
+                <option value="Data Problem">Data Problem</option>
+                <option value="Privacy & Security">Privacy & Security</option>
+                <option value="Other">Other</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- What happened? -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1.5 txt-lbl-what-happened">
+              What happened? *
+            </label>
+            <textarea
+              id="form-what-happened"
+              required
+              rows="3"
+              placeholder="Describe the problem..."
+              class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 font-medium placeholder:text-slate-400"
+            ></textarea>
+          </div>
+
+          <!-- Steps to reproduce -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1.5 txt-lbl-steps">
+              Steps to reproduce
+            </label>
+            <input
+              type="text"
+              id="form-steps"
+              placeholder="What did you do before the problem?"
+              class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 font-medium placeholder:text-slate-400"
+            />
+          </div>
+
+          <!-- Attachment -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1.5 txt-lbl-attachment">
+              Attachment
+            </label>
+            <label class="flex flex-col items-center justify-center p-3.5 bg-slate-50 border border-dashed border-slate-300 rounded-xl hover:bg-slate-100/80 cursor-pointer transition-colors group">
+              <div class="flex items-center gap-2 text-xs font-semibold text-indigo-600 group-hover:text-indigo-700">
+                <span class="text-sm">＋</span>
+                <span class="txt-btn-add-file">Add Screenshot / File</span>
+              </div>
+              <input type="file" id="form-file-input" onchange="handleFileSelected(this)" class="hidden" accept="image/*,.pdf,.log" />
+            </label>
+            <div id="file-preview-badge" class="hidden mt-1.5 px-3 py-1.5 bg-indigo-50 border border-indigo-100 rounded-lg text-xs text-indigo-900 flex items-center justify-between">
+              <span id="file-preview-name" class="truncate font-mono text-[11px]">filename.png</span>
+              <button type="button" onclick="removeSelectedFile()" class="text-slate-400 hover:text-rose-600 ml-2">✕</button>
+            </div>
+          </div>
+
+          <!-- Checkbox: Include device & app info -->
+          <div class="flex items-center gap-2.5 pt-1">
+            <input
+              type="checkbox"
+              id="form-device-info"
+              checked
+              class="w-4 h-4 text-indigo-600 rounded-md border-slate-300 focus:ring-indigo-500 cursor-pointer"
+            />
+            <label for="form-device-info" class="text-xs text-slate-600 font-medium cursor-pointer select-none txt-lbl-device-info">
+              Include device & app information
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-98 text-white font-bold text-xs sm:text-sm shadow-2xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span class="txt-btn-submit-report">Submit Report</span>
+          </button>
+
+        </form>
+
+        <!-- Report Success Screen -->
+        <div id="report-submission-success" class="hidden text-center py-6 space-y-3 bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4">
+          <div class="w-10 h-10 mx-auto rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+            <i data-lucide="check" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-sm font-bold text-emerald-950 txt-success-head">Report Submitted Successfully!</h3>
+          <p class="text-xs text-slate-600 txt-success-desc">
+            Your tracking ID: <strong id="tkt-id-badge" class="font-mono text-indigo-700 font-bold">#TKT-9428</strong>
+          </p>
+          <p class="text-[11px] text-emerald-800 font-medium txt-success-note">Our engineering support team is looking into it.</p>
+          <button
+            onclick="resetProblemReportForm()"
+            class="mt-2 px-4 py-2 rounded-xl bg-white border border-emerald-300 text-xs font-bold text-emerald-900 hover:bg-emerald-100/50 cursor-pointer active:scale-95 transition-all shadow-2xs txt-btn-submit-another"
+          >
+            Submit Another Report
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- SCREEN 4: HELP TOPIC                                 -->
+    <!-- ==================================================== -->
+    <section id="screen-topic" class="screen-view space-y-4">
+      
+      <div class="pt-1 space-y-1">
+        <h2 class="text-lg sm:text-xl font-bold tracking-tight text-slate-900" id="topic-screen-title">
+          Getting Started
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 font-medium" id="topic-screen-subtitle">
+          Learn the basics of Solvian
+        </p>
+      </div>
+
+      <!-- Articles list under this topic -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs divide-y divide-slate-100 overflow-hidden" id="topic-articles-container">
+        <!-- Rendered via JS -->
+      </div>
+
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- SCREEN 5: HELP ARTICLE                               -->
+    <!-- ==================================================== -->
+    <section id="screen-article" class="screen-view space-y-5">
+      
+      <div class="space-y-1 border-b border-slate-200 pb-3">
+        <h2 class="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900" id="article-screen-title">
+          How to get started
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 font-medium" id="article-screen-intro">
+          Learn how to start using Solvian.
+        </p>
+      </div>
+
+      <!-- Step by step instructions -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-4" id="article-screen-body">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Was this article helpful? -->
+      <div class="p-4 rounded-2xl bg-white border border-slate-200 text-center space-y-2.5 shadow-2xs">
+        <p class="text-xs font-bold text-slate-800 txt-helpful-prompt">
+          Was this article helpful?
+        </p>
+        <div class="flex items-center justify-center gap-3" id="helpful-actions-group">
+          <button
+            onclick="recordFeedback('yes')"
+            class="px-4 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 border border-slate-200 text-xs font-bold text-slate-700 transition-colors cursor-pointer flex items-center gap-1.5 active:scale-95"
+          >
+            <span>👍</span>
+            <span class="txt-helpful-yes">Yes</span>
+          </button>
+          <button
+            onclick="recordFeedback('no')"
+            class="px-4 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-700 hover:border-rose-200 border border-slate-200 text-xs font-bold text-slate-700 transition-colors cursor-pointer flex items-center gap-1.5 active:scale-95"
+          >
+            <span>👎</span>
+            <span class="txt-helpful-no">No</span>
+          </button>
+        </div>
+        <p id="helpful-feedback-msg" class="hidden text-xs font-bold text-emerald-700">
+          Thank you for your feedback!
+        </p>
+      </div>
+
+      <!-- Still need help? -> Report a Problem -->
+      <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100 flex items-center justify-between text-xs text-indigo-950">
+        <div class="space-y-0.5">
+          <span class="font-bold block txt-still-need-help">Still need help?</span>
+          <span class="text-slate-500 text-[11px] txt-still-need-desc">Our team is available to assist you.</span>
+        </div>
+        <button
+          onclick="navigateToMainTab('report')"
+          class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition-all cursor-pointer shadow-2xs"
+        >
+          <span class="txt-action-report-link">Report a Problem</span>
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= LANGUAGE CHANGE MODAL ================= -->
+  <!-- 
+    Language
+    ○ English
+    ○ বাংলা
+    ○ العربية
+              [Done]
+  -->
+  <div id="language-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4">
+    <div class="bg-white w-full max-w-xs rounded-2xl shadow-xl overflow-hidden p-5 space-y-4 animate-in fade-in zoom-in-95 duration-150">
+      
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+        <h3 class="text-base font-bold text-slate-900 txt-lang-modal-title">
+          Language
+        </h3>
+        <button onclick="closeLanguageModal()" class="text-slate-400 hover:text-slate-600 text-sm font-bold">
+          ✕
+        </button>
+      </div>
+
+      <!-- Radio options -->
+      <div class="space-y-2">
+        <label class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 cursor-pointer border border-transparent has-checked:border-indigo-200 has-checked:bg-indigo-50/50">
+          <span class="text-xs font-bold text-slate-800">English</span>
+          <input type="radio" name="lang_select" value="en" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500" />
+        </label>
+
+        <label class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 cursor-pointer border border-transparent has-checked:border-indigo-200 has-checked:bg-indigo-50/50">
+          <span class="text-xs font-bold text-slate-800">বাংলা (Bengali)</span>
+          <input type="radio" name="lang_select" value="bn" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500" />
+        </label>
+
+        <label class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 cursor-pointer border border-transparent has-checked:border-indigo-200 has-checked:bg-indigo-50/50">
+          <span class="text-xs font-bold text-slate-800">العربية (Arabic)</span>
+          <input type="radio" name="lang_select" value="ar" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500" />
+        </label>
+      </div>
+
+      <!-- Done Button -->
+      <div class="flex justify-end pt-1">
+        <button
+          onclick="applySelectedLanguage()"
+          class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 active:scale-98 text-white rounded-xl text-xs font-bold shadow-2xs cursor-pointer transition-all"
+        >
+          <span class="txt-btn-done">Done</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= COMPREHENSIVE JAVASCRIPT APP STATE & ENGINE ================= -->
+  <script>
+    // State management
+    let currentLanguage = 'en'; // 'en', 'bn', or 'ar'
+    let navigationStack = ['screen-help-center'];
+    let currentActiveTopicId = null;
+    let currentActiveArticleId = null;
+
+    // Translation Dictionary for all 3 languages (English, বাংলা, العربية)
+    const translations = {
+      en: {
+        langName: 'English',
+        topTitle: 'Help & Support',
+        subtabHelpCenter: 'Help Center',
+        subtabFaq: 'FAQ',
+        subtabReport: 'Report a Problem',
+        heroTitle: 'How can we help?',
+        heroDesc: 'Find answers, guides and solutions.',
+        searchPlaceholder: 'Search help articles...',
+        popularHeading: 'Popular Help',
+        popGettingStartedTitle: 'Getting Started',
+        popGettingStartedDesc: 'Learn the basics of Solvian',
+        popAccountTitle: 'Account & Login',
+        popAccountDesc: 'Account, sign-in and access',
+        popFeaturesTitle: 'Features & Settings',
+        popFeaturesDesc: 'Learn how Solvian works',
+        browseHeading: 'Browse Help Topics',
+        browsePrivacyTitle: 'Privacy & Security',
+        browseTroubleshootTitle: 'Troubleshooting',
+        browseAppTitle: 'App & Features',
+        browseMoreTitle: 'More Help',
+        needMoreHeading: 'Need more help?',
+        needReportTitle: 'Report a Problem',
+        needReportDesc: 'Tell us what went wrong',
+        faqMainTitle: 'Frequently Asked Questions',
+        faqSearchPlaceholder: 'Search FAQs...',
+        faqCatGeneral: 'General',
+        faqCatAccount: 'Account & Privacy',
+        faqCatTroubleshoot: 'Troubleshooting',
+        faqQ1: 'What is Solvian?',
+        faqA1: 'Solvian is your comprehensive productivity and service platform designed to empower your daily workflows with fast, secure, and intuitive tools.',
+        faqQ2: 'How do I get started?',
+        faqA2: 'Download or open the app, complete your initial account registration, verify your credentials, and start exploring tools from the home dashboard.',
+        faqQ3: 'How do I change the language?',
+        faqA3: 'Tap the 🌐 globe icon in the top bar anytime to choose English, বাংলা, or العربية. The interface updates instantly.',
+        faqQ4: 'How do I change my settings?',
+        faqA4: 'Go to your Profile and select Settings to adjust notifications, display themes, security preferences, and cloud sync options.',
+        faqQ5: 'How do I manage my account?',
+        faqA5: 'Open Settings > Account Management to update your email, linked phone number, password, or configure Two-Factor Authentication.',
+        faqQ6: 'How is my data protected?',
+        faqA6: 'Solvian uses TLS 1.3 encryption for data in transit and AES-256 for data at rest. We never share your private records with third parties.',
+        faqQ7: 'The app isn\'t working. What do I do?',
+        faqA7: 'Try closing and reopening the app, clear the cache from Phone Settings > Apps > Solvian, or switch to the "Report a Problem" tab to send a diagnostic report.',
+        reportMainTitle: 'Report a Problem',
+        reportMainSubtitle: 'Help us understand what went wrong.',
+        lblProblemType: 'Problem Type *',
+        optSelectType: 'Select a problem type',
+        lblWhatHappened: 'What happened? *',
+        phWhatHappened: 'Describe the problem...',
+        lblSteps: 'Steps to reproduce',
+        phSteps: 'What did you do before the problem?',
+        lblAttachment: 'Attachment',
+        btnAddFile: 'Add Screenshot / File',
+        lblDeviceInfo: 'Include device & app information',
+        btnSubmitReport: 'Submit Report',
+        successHead: 'Report Submitted Successfully!',
+        successDesc: 'Your tracking ID:',
+        successNote: 'Our engineering support team is looking into it.',
+        btnSubmitAnother: 'Submit Another Report',
+        helpfulPrompt: 'Was this article helpful?',
+        helpfulYes: 'Yes',
+        helpfulNo: 'No',
+        helpfulFeedbackMsg: 'Thank you for your feedback!',
+        stillNeedHelp: 'Still need help?',
+        stillNeedDesc: 'Our team is available to assist you.',
+        actionReportLink: 'Report a Problem',
+        langModalTitle: 'Language',
+        btnDone: 'Done'
+      },
+      bn: {
+        langName: 'বাংলা',
+        topTitle: 'Help & Support',
+        subtabHelpCenter: 'Help Center',
+        subtabFaq: 'FAQ',
+        subtabReport: 'Report a Problem',
+        heroTitle: 'কীভাবে আমরা সাহায্য করতে পারি?',
+        heroDesc: 'উত্তর, গাইড এবং সমস্যার সমাধান খুঁজুন।',
+        searchPlaceholder: 'আর্টিকেল বা সাহায্য খুঁজুন...',
+        popularHeading: 'Popular Help',
+        popGettingStartedTitle: 'Getting Started',
+        popGettingStartedDesc: 'Solvian-এর প্রাথমিক ব্যবহারবিধি জানুন',
+        popAccountTitle: 'Account & Login',
+        popAccountDesc: 'অ্যাকাউন্ট, সাইন-ইন ও অ্যাক্সেস সমাধান',
+        popFeaturesTitle: 'Features & Settings',
+        popFeaturesDesc: 'Solvian কীভাবে কাজ করে জানুন',
+        browseHeading: 'Browse Help Topics',
+        browsePrivacyTitle: 'Privacy & Security',
+        browseTroubleshootTitle: 'Troubleshooting',
+        browseAppTitle: 'App & Features',
+        browseMoreTitle: 'More Help',
+        needMoreHeading: 'Need more help?',
+        needReportTitle: 'Report a Problem',
+        needReportDesc: 'আপনার সমস্যা আমাদের জানান',
+        faqMainTitle: 'সাধারণ জিজ্ঞাসা (FAQ)',
+        faqSearchPlaceholder: 'প্রশ্ন খুঁজুন...',
+        faqCatGeneral: 'সাধারণ (General)',
+        faqCatAccount: 'অ্যাকাউন্ট ও প্রাইভেসী',
+        faqCatTroubleshoot: 'সমস্যা সমাধান (Troubleshooting)',
+        faqQ1: 'Solvian কী?',
+        faqA1: 'Solvian হলো একটি আধুনিক ও নিরাপদ প্ল্যাটফর্ম যা আপনার দৈনন্দিন কাজগুলোকে দ্রুত ও সহজতর করতে তৈরি।',
+        faqQ2: 'আমি কীভাবে শুরু করব?',
+        faqA2: 'অ্যাপটি চালু করুন, আপনার অ্যাকাউন্ট সাইন-আপ সম্পন্ন করুন এবং ড্যাশবোর্ড থেকে প্রয়োজনীয় টুলস ব্যবহার শুরু করুন।',
+        faqQ3: 'আমি কীভাবে ভাষা পরিবর্তন করব?',
+        faqA3: 'উপরের 🌐 আইকনে ট্যাপ করে যেকোনো সময় ইংরেজি, বাংলা বা আরবি ভাষা নির্বাচন করতে পারেন।',
+        faqQ4: 'আমি কীভাবে সেটিংস পরিবর্তন করব?',
+        faqA4: 'প্রোফাইল থেকে সেটিংস অপশনে গিয়ে নোটিফিকেশন, ডিসপ্লে ও নিরাপত্তা সংক্রান্ত পছন্দ পরিবর্তন করুন।',
+        faqQ5: 'আমি কীভাবে আমার অ্যাকাউন্ট পরিচালনা করব?',
+        faqA5: 'সেটিংস > অ্যাকাউন্ট অপশন থেকে আপনার ইমেইল, মোবাইল নম্বর বা পাসওয়ার্ড আপডেট করুন।',
+        faqQ6: 'আমার ডেটা কতটা সুরক্ষিত?',
+        faqA6: 'Solvian আপনার ডেটা সুরক্ষায় TLS 1.3 ও AES-256 এনক্রিপশন ব্যবহার করে এবং কারও সাথে তথ্য শেয়ার করে না।',
+        faqQ7: 'অ্যাপ কাজ না করলে আমি কী করব?',
+        faqA7: 'অ্যাপটি রিস্টার্ট করুন, ফোনের সেটিংস থেকে ক্যাশ ক্লিয়ার করুন অথবা Report a Problem ট্যাবে গিয়ে আমাদের জানান।',
+        reportMainTitle: 'Report a Problem',
+        reportMainSubtitle: 'আপনার সমস্যাটি বিস্তারিত লিখুন।',
+        lblProblemType: 'সমস্যার ধরন (Problem Type) *',
+        optSelectType: 'সমস্যার ধরন নির্বাচন করুন',
+        lblWhatHappened: 'কী সমস্যা হয়েছে? *',
+        phWhatHappened: 'সমস্যার বিবরণ লিখুন...',
+        lblSteps: 'সমস্যা ঘটার পূর্বের ধাপসমূহ (Steps to reproduce)',
+        phSteps: 'সমস্যা হওয়ার আগে কী করেছিলেন?',
+        lblAttachment: 'সংযুক্তি (Attachment)',
+        btnAddFile: 'স্ক্রিনশট বা ফাইল যুক্ত করুন',
+        lblDeviceInfo: 'ডিভাইস ও অ্যাপের তথ্য যুক্ত করুন',
+        btnSubmitReport: 'রিপোর্ট জমা দিন (Submit Report)',
+        successHead: 'রিপোর্ট সফলভাবে জমা হয়েছে!',
+        successDesc: 'আপনার ট্র্যাকিং আইডি:',
+        successNote: 'আমাদের সাপোর্ট টিম বিষয়টি পর্যালোচনা করছে।',
+        btnSubmitAnother: 'আরেকটি রিপোর্ট জমা দিন',
+        helpfulPrompt: 'এই আর্টিকেলটি কি সহায়ক হয়েছে?',
+        helpfulYes: 'হ্যাঁ (Yes)',
+        helpfulNo: 'না (No)',
+        helpfulFeedbackMsg: 'আপনার মতামতের জন্য ধন্যবাদ!',
+        stillNeedHelp: 'আরও সাহায্যের প্রয়োজন?',
+        stillNeedDesc: 'আমাদের সাপোর্ট টিম সর্বদা আপনার পাশে আছে।',
+        actionReportLink: 'Report a Problem',
+        langModalTitle: 'ভাষা (Language)',
+        btnDone: 'সম্পন্ন (Done)'
+      },
+      ar: {
+        langName: 'العربية',
+        topTitle: 'المساعدة والدعم',
+        subtabHelpCenter: 'مركز المساعدة',
+        subtabFaq: 'الأسئلة الشائعة',
+        subtabReport: 'الإبلاغ عن مشكلة',
+        heroTitle: 'كيف يمكننا مساعدتك؟',
+        heroDesc: 'ابحث عن الإجابات والأدلة والحلول.',
+        searchPlaceholder: 'ابحث في مقالات المساعدة...',
+        popularHeading: 'المساعدة الشائعة',
+        popGettingStartedTitle: 'البدء مع Solvian',
+        popGettingStartedDesc: 'تعلم أساسيات Solvian',
+        popAccountTitle: 'الحساب وتسجيل الدخول',
+        popAccountDesc: 'الحساب وتسجيل الدخول والوصول',
+        popFeaturesTitle: 'الميزات والإعدادات',
+        popFeaturesDesc: 'تعرف على كيفية عمل Solvian',
+        browseHeading: 'تصفح مواضيع المساعدة',
+        browsePrivacyTitle: 'الخصوصية والأمان',
+        browseTroubleshootTitle: 'استكشاف الأخطاء وإصلاحها',
+        browseAppTitle: 'التطبيق والميزات',
+        browseMoreTitle: 'مزيد من المساعدة',
+        needMoreHeading: 'هل تحتاج إلى مزيد من المساعدة؟',
+        needReportTitle: 'الإبلاغ عن مشكلة',
+        needReportDesc: 'أخبرنا بما حدث من خطأ',
+        faqMainTitle: 'الأسئلة الشائعة',
+        faqSearchPlaceholder: 'ابحث في الأسئلة...',
+        faqCatGeneral: 'عام',
+        faqCatAccount: 'الحساب والخصوصية',
+        faqCatTroubleshoot: 'استكشاف الأخطاء وإصلاحها',
+        faqQ1: 'ما هو Solvian؟',
+        faqA1: 'Solvian هي منصتك الشاملة للإنتاجية والخدمات المصممة لتمكين أعمالك اليومية بأدوات سريعة وآمنة.',
+        faqQ2: 'كيف أبدأ؟',
+        faqA2: 'افتح التطبيق، وأكمل التسجيل، وتحقق من بياناتك، وابدأ في استكشاف الأدوات من لوحة التحكم.',
+        faqQ3: 'كيف يمكنني تغيير اللغة؟',
+        faqA3: 'اضغط على أيقونة 🌐 في الشريط العلوي للاختيار بين الإنجليزية أو البنغالية أو العربية فوراً.',
+        faqQ4: 'كيف أقوم بتغيير إعداداتي؟',
+        faqA4: 'انتقل إلى الملف الشخصي واختر الإعدادات لضبط الإشعارات والمظهر والأمان والمزامنة السحابية.',
+        faqQ5: 'كيف أدير حسابي؟',
+        faqA5: 'افتح الإعدادات > إدارة الحساب لتحديث بريدك الإلكتروني ورقم هاتفك أو تغيير كلمة المرور.',
+        faqQ6: 'كيف تتم حماية بياناتي؟',
+        faqA6: 'يستخدم Solvian تشفير TLS 1.3 و AES-256 لحماية بياناتك ولن نشاركها أبداً مع أطراف ثالثة.',
+        faqQ7: 'التطبيق لا يعمل. ماذا أفعل؟',
+        faqA7: 'أعد تشغيل التطبيق أو امسح ذاكرة التخزين المؤقت أو انتقل لتبويب الإبلاغ عن مشكلة.',
+        reportMainTitle: 'الإبلاغ عن مشكلة',
+        reportMainSubtitle: 'ساعدنا على فهم المشكلة التي واجهتك.',
+        lblProblemType: 'نوع المشكلة *',
+        optSelectType: 'اختر نوع المشكلة',
+        lblWhatHappened: 'ماذا حدث؟ *',
+        phWhatHappened: 'صف المشكلة بالتفصيل...',
+        lblSteps: 'خطوات تكرار المشكلة',
+        phSteps: 'ماذا فعلت قبل حدوث المشكلة؟',
+        lblAttachment: 'مرفق',
+        btnAddFile: 'إضافة لقطة شاشة / ملف',
+        lblDeviceInfo: 'تضمين معلومات الجهاز والتطبيق',
+        btnSubmitReport: 'إرسال التقرير',
+        successHead: 'تم إرسال التقرير بنجاح!',
+        successDesc: 'معرف التتبع الخاص بك:',
+        successNote: 'فريق الدعم الهندسي يقوم بمراجعة المشكلة حالياً.',
+        btnSubmitAnother: 'إرسال تقرير آخر',
+        helpfulPrompt: 'هل كانت هذه المقالة مفيدة؟',
+        helpfulYes: 'نعم',
+        helpfulNo: 'لا',
+        helpfulFeedbackMsg: 'شكراً لملاحظاتك القيّمة!',
+        stillNeedHelp: 'هل ما زلت بحاجة للمساعدة؟',
+        stillNeedDesc: 'فريق الدعم لدينا متاح لمساعدتك دائماً.',
+        actionReportLink: 'الإبلاغ عن مشكلة',
+        langModalTitle: 'اللغة',
+        btnDone: 'تم'
+      }
+    };
+
+    // Topics & Articles Database (Multi-lingual)
+    const topicDatabase = {
+      'topic-getting-started': {
+        titleEn: 'Getting Started',
+        titleBn: 'Getting Started',
+        titleAr: 'البدء مع Solvian',
+        subtitleEn: 'Learn the basics of Solvian',
+        subtitleBn: 'Solvian-এর প্রাথমিক ব্যবহারবিধি জানুন',
+        subtitleAr: 'تعلم أساسيات Solvian',
+        articles: [
+          'art-how-to-start',
+          'art-home-screen',
+          'art-account-setup',
+          'art-language-change'
+        ]
+      },
+      'topic-account-login': {
+        titleEn: 'Account & Login',
+        titleBn: 'Account & Login',
+        titleAr: 'الحساب وتسجيل الدخول',
+        subtitleEn: 'Account, sign-in and access',
+        subtitleBn: 'অ্যাকাউন্ট, সাইন-ইন ও অ্যাক্সেস',
+        subtitleAr: 'الحساب وتسجيل الدخول والوصول',
+        articles: [
+          'art-account-setup',
+          'art-password-reset',
+          'art-two-factor'
+        ]
+      },
+      'topic-features-settings': {
+        titleEn: 'Features & Settings',
+        titleBn: 'Features & Settings',
+        titleAr: 'الميزات والإعدادات',
+        subtitleEn: 'Learn how Solvian works',
+        subtitleBn: 'Solvian কীভাবে কাজ করে জানুন',
+        subtitleAr: 'تعرف على كيفية عمل Solvian',
+        articles: [
+          'art-home-screen',
+          'art-language-change',
+          'art-notifications'
+        ]
+      },
+      'topic-privacy-security': {
+        titleEn: 'Privacy & Security',
+        titleBn: 'Privacy & Security',
+        titleAr: 'الخصوصية والأمان',
+        subtitleEn: 'Data protection and security controls',
+        subtitleBn: 'তথ্য সুরক্ষা ও প্রাইভেসী কন্ট্রোল',
+        subtitleAr: 'حماية البيانات وضوابط الأمان',
+        articles: [
+          'art-two-factor',
+          'art-data-privacy'
+        ]
+      },
+      'topic-troubleshooting': {
+        titleEn: 'Troubleshooting',
+        titleBn: 'Troubleshooting',
+        titleAr: 'استكشاف الأخطاء وإصلاحها',
+        subtitleEn: 'Fix common errors and bugs',
+        subtitleBn: 'সাধারণ ত্রুটি ও বাগ ফিক্স করুন',
+        subtitleAr: 'إصلاح الأخطاء الشائعة',
+        articles: [
+          'art-cache-clear',
+          'art-connection-issue'
+        ]
+      },
+      'topic-app-features': {
+        titleEn: 'App & Features',
+        titleBn: 'App & Features',
+        titleAr: 'التطبيق والميزات',
+        subtitleEn: 'Deep-dive into tools and modules',
+        subtitleBn: 'সকল টুলস ও ফিচারের বিবরণ',
+        subtitleAr: 'نظرة شاملة على الأدوات والميزات',
+        articles: [
+          'art-home-screen',
+          'art-notifications'
+        ]
+      },
+      'topic-more-help': {
+        titleEn: 'More Help',
+        titleBn: 'More Help',
+        titleAr: 'مزيد من المساعدة',
+        subtitleEn: 'Contact support and view guides',
+        subtitleBn: 'সাপোর্ট যোগাযোগ ও সহায়ক গাইড',
+        subtitleAr: 'تواصل مع الدعم واستعرض الأدلة',
+        articles: [
+          'art-how-to-start',
+          'art-connection-issue'
+        ]
+      }
+    };
+
+    const articleDatabase = {
+      'art-how-to-start': {
+        titleEn: 'How to get started',
+        titleBn: 'How to get started',
+        titleAr: 'كيف تبدأ',
+        introEn: 'Learn how to start using Solvian.',
+        introBn: 'Solvian কীভাবে ব্যবহার শুরু করবেন জানুন।',
+        introAr: 'تعرف على كيفية بدء استخدام Solvian.',
+        stepsEn: [
+          '1. Open Solvian',
+          '2. Complete the initial setup.',
+          '3. Choose your preferences.',
+          '4. Start using Solvian.'
+        ],
+        stepsBn: [
+          '১. Solvian অ্যাপটি খুলুন।',
+          '২. প্রাথমিক সেটআপ সম্পন্ন করুন।',
+          '৩. আপনার পছন্দসমূহ নির্বাচন করুন।',
+          '৪. Solvian ব্যবহার শুরু করুন।'
+        ],
+        stepsAr: [
+          '١. افتح تطبيق Solvian.',
+          '٢. أكمل الإعداد الأولي.',
+          '٣. اختر تفضيلاتك.',
+          '٤. ابدأ باستخدام Solvian.'
+        ]
+      },
+      'art-home-screen': {
+        titleEn: 'Understanding the home screen',
+        titleBn: 'Understanding the home screen',
+        titleAr: 'فهم الشاشة الرئيسية',
+        introEn: 'Learn the core layout of Solvian dashboard.',
+        introBn: 'Solvian ড্যাশবোর্ডের মূল লেআউট জানুন।',
+        introAr: 'تعرف على الواجهة الرئيسية للوحة التحكم.',
+        stepsEn: [
+          '1. Top Bar contains navigation and Language Switcher (🌐).',
+          '2. Quick action cards give one-tap access to primary tools.',
+          '3. Recent activity lists your latest updates and sync status.'
+        ],
+        stepsBn: [
+          '১. টপ বারে নেভিগেশন ও ভাষা পরিবর্তন বাটন (🌐) রয়েছে।',
+          '২. কুইক অ্যাকশন কার্ড দিয়ে দ্রুত টুলস ওপেন করা যায়।',
+          '৩. রিসেন্ট অ্যাক্টিভিটি আপনার সর্বশেষ আপডেট প্রদর্শন করে।'
+        ],
+        stepsAr: [
+          '١. يحتوي الشريط العلوي على التنقل ومبدل اللغة (🌐).',
+          '٢. تتيح بطاقات الإجراء السريع الوصول للأدوات بنقرة واحدة.',
+          '٣. يعرض النشاط الأخير أحدث التحديثات وحالة المزامنة.'
+        ]
+      },
+      'art-account-setup': {
+        titleEn: 'Setting up your account',
+        titleBn: 'Setting up your account',
+        titleAr: 'إعداد حسابك',
+        introEn: 'Steps to configure and verify your user profile.',
+        introBn: 'প্রোফাইল কনফিগার ও ভেরিফাই করার নিয়ম।',
+        introAr: 'خطوات تهيئة وتأكيد ملفك الشخصي.',
+        stepsEn: [
+          '1. Go to Profile Settings.',
+          '2. Enter your legal name and contact details.',
+          '3. Verify your email or mobile OTP code.',
+          '4. Save and protect with a strong password.'
+        ],
+        stepsBn: [
+          '১. প্রোফাইল সেটিংস অপশনে যান।',
+          '২. আপনার নাম ও যোগাযোগের তথ্য দিন।',
+          '৩. ইমেইল বা মোবাইল ওটিপি (OTP) যাচাই করুন।',
+          '৪. সেভ করুন এবং শক্তিশালী পাসওয়ার্ড দিন।'
+        ],
+        stepsAr: [
+          '١. انتقل إلى إعدادات الملف الشخصي.',
+          '٢. أدخل اسمك وبيانات الاتصال.',
+          '٣. تحقق من رمز OTP عبر البريد أو الهاتف.',
+          '٤. احفظ التغييرات بكلمة مرور قوية.'
+        ]
+      },
+      'art-language-change': {
+        titleEn: 'Changing language',
+        titleBn: 'Changing language',
+        titleAr: 'تغيير اللغة',
+        introEn: 'How to switch languages across the whole app.',
+        introBn: 'অ্যাপের ভাষা পরিবর্তন করার পদ্ধতি।',
+        introAr: 'كيفية تبديل اللغة عبر التطبيق بالكامل.',
+        stepsEn: [
+          '1. Tap the 🌐 globe icon at the top right.',
+          '2. Select your preferred language (English, বাংলা, or العربية).',
+          '3. Tap "Done" to apply changes instantly.'
+        ],
+        stepsBn: [
+          '১. উপরে ডানদিকে 🌐 গ্লোব আইকনে ট্যাপ করুন।',
+          '২. আপনার পছন্দের ভাষা (English, বাংলা, বা العربية) বেছে নিন।',
+          '৩. সাথে সাথে পরিবর্তন প্রয়োগ করতে "Done" বাটনে চাপুন।'
+        ],
+        stepsAr: [
+          '١. اضغط على أيقونة 🌐 في أعلى اليمين أو اليسار.',
+          '٢. اختر لغتك المفضلة (English، أو বাংলা، أو العربية).',
+          '٣. اضغط على "تم" لتطبيق التغييرات فوراً.'
+        ]
+      },
+      'art-password-reset': {
+        titleEn: 'Resetting forgotten password',
+        titleBn: 'Resetting forgotten password',
+        titleAr: 'إعادة تعيين كلمة المرور المنسية',
+        introEn: 'Recover access to your Solvian account.',
+        introBn: 'আপনার অ্যাকাউন্টের অ্যাক্সেস পুনরুদ্ধার করুন।',
+        introAr: 'استعادة الوصول إلى حساب Solvian الخاص بك.',
+        stepsEn: [
+          '1. On the login screen, click "Forgot Password".',
+          '2. Enter your registered email or mobile number.',
+          '3. Check your inbox or SMS for verification code.',
+          '4. Enter the code and set a new password.'
+        ],
+        stepsBn: [
+          '১. লগইন স্ক্রিনে "Forgot Password" অপশনে চাপুন।',
+          '২. নিবন্ধিত ইমেইল বা ফোন নম্বর দিন।',
+          '৩. এসএমএস বা ইমেইলে পাওয়া কোডটি প্রবেশ করান।',
+          '৪. নতুন পাসওয়ার্ড সেট করে লগইন করুন।'
+        ],
+        stepsAr: [
+          '١. في شاشة تسجيل الدخول، اضغط على "نسيت كلمة المرور".',
+          '٢. أدخل بريدك الإلكتروني أو رقم هاتفك المسجل.',
+          '٣. أدخل رمز التحقق المستلم.',
+          '٤. قم بتعيين كلمة مرور جديدة.'
+        ]
+      },
+      'art-two-factor': {
+        titleEn: 'Enabling Two-Factor Authentication',
+        titleBn: 'Enabling Two-Factor Authentication',
+        titleAr: 'تفعيل المصادقة الثنائية',
+        introEn: 'Add an extra layer of security to your account.',
+        introBn: 'আপনার অ্যাকাউন্টে বাড়তি নিরাপত্তা যুক্ত করুন।',
+        introAr: 'أضف طبقة أمان إضافية إلى حسابك.',
+        stepsEn: [
+          '1. Navigate to Settings > Security.',
+          '2. Toggle on "Two-Factor Authentication".',
+          '3. Link an Authenticator App or SMS verification.',
+          '4. Save your backup emergency recovery codes.'
+        ],
+        stepsBn: [
+          '১. সেটিংস > সিকিউরিটি অপশনে যান।',
+          '২. "Two-Factor Authentication" অন করুন।',
+          '৩. এসএমএস বা অথেনটিকেটর অ্যাপ যুক্ত করুন।',
+          '৪. ব্যাকআপ রিকভারি কোড সংরক্ষণ করে রাখুন।'
+        ],
+        stepsAr: [
+          '١. انتقل إلى الإعدادات > الأمان.',
+          '٢. قم بتفعيل "المصادقة الثنائية".',
+          '٣. اربط تطبيق المصادقة أو التحقق عبر الرسائل.',
+          '٤. احفظ رموز الاسترداد الاحتياطية في مكان آمن.'
+        ]
+      },
+      'art-notifications': {
+        titleEn: 'Managing Notifications',
+        titleBn: 'Managing Notifications',
+        titleAr: 'إدارة الإشعارات',
+        introEn: 'Control what alerts you receive and when.',
+        introBn: 'কোন নোটিফিকেশন কখন পাবেন তা নিয়ন্ত্রণ করুন।',
+        introAr: 'التحكم في التنبيهات التي تتلقاها وتوقيتها.',
+        stepsEn: [
+          '1. Go to Settings > Notifications.',
+          '2. Customize Push alerts, Email summaries, and In-app banners.',
+          '3. Set Do Not Disturb hours if needed.'
+        ],
+        stepsBn: [
+          '১. সেটিংস > নোটিফিকেশন অপশনে যান।',
+          '২. পুশ নোটিফিকেশন ও ইমেইল অ্যালার্ট পছন্দমতো নির্ধারণ করুন।',
+          '৩. প্রয়োজনে ডু নট ডিস্টার্ব (DND) সময় সেট করুন।'
+        ],
+        stepsAr: [
+          '١. انتقل إلى الإعدادات > الإشعارات.',
+          '٢. خصص التنبيهات الفورية وملخصات البريد.',
+          '٣. حدد ساعات عدم الإزعاج حسب رغبتك.'
+        ]
+      },
+      'art-data-privacy': {
+        titleEn: 'Data Privacy & Retention',
+        titleBn: 'Data Privacy & Retention',
+        titleAr: 'خصوصية البيانات والاحتفاظ بها',
+        introEn: 'How Solvian safeguards your sensitive information.',
+        introBn: 'Solvian যেভাবে আপনার তথ্য সম্পূর্ণ গোপন রাখে।',
+        introAr: 'كيف يحمي Solvian معلوماتك الحساسة.',
+        stepsEn: [
+          '1. All personal data is encrypted at rest and in transit.',
+          '2. You can request a data export copy anytime.',
+          '3. You have the right to request full account deletion.'
+        ],
+        stepsBn: [
+          '১. সকল তথ্য এনক্রিপ্ট করে সুরক্ষিত রাখা হয়।',
+          '২. যেকোনো সময় আপনার ডেটার কপি ডাউনলোড করতে পারেন।',
+          '৩. স্থায়ীভাবে অ্যাকাউন্ট মুছে ফেলার পূর্ণ অধিকার রয়েছে।'
+        ],
+        stepsAr: [
+          '١. جميع البيانات مشفرة أثناء النقل والتخزين.',
+          '٢. يمكنك طلب نسخة لتصدير بياناتك في أي وقت.',
+          '٣. لديك الحق في طلب حذف الحساب بالكامل.'
+        ]
+      },
+      'art-cache-clear': {
+        titleEn: 'How to clear cache',
+        titleBn: 'How to clear cache',
+        titleAr: 'كيفية مسح ذاكرة التخزين المؤقت',
+        introEn: 'Resolve app lags and performance hiccups.',
+        introBn: 'অ্যাপের স্লো ভাব দূর করতে ক্যাশ পরিষ্কার করুন।',
+        introAr: 'حل بطء التطبيق ومشكلات الأداء.',
+        stepsEn: [
+          '1. Open your device Settings > Apps > Solvian.',
+          '2. Tap "Storage & Cache".',
+          '3. Tap "Clear Cache".',
+          '4. Relaunch Solvian.'
+        ],
+        stepsBn: [
+          '১. ফোনের সেটিংস > অ্যাপস > Solvian-এ যান।',
+          '২. Storage & Cache অপশনে চাপুন।',
+          '৩. "Clear Cache" বাটনে চাপুন।',
+          '৪. পুনরায় Solvian ওপেন করুন।'
+        ],
+        stepsAr: [
+          '١. افتح إعدادات جهازك > التطبيقات > Solvian.',
+          '٢. اضغط على "التخزين وذاكرة التخزين المؤقت".',
+          '٣. اضغط على "مسح ذاكرة التخزين المؤقت".',
+          '٤. أعد تشغيل Solvian.'
+        ]
+      },
+      'art-connection-issue': {
+        titleEn: 'Fixing network & sync issues',
+        titleBn: 'Fixing network & sync issues',
+        titleAr: 'إصلاح مشكلات الشبكة والمزامنة',
+        introEn: 'Troubleshoot offline errors and synchronization delays.',
+        introBn: 'নেটওয়ার্ক ও ডেটা সিঙ্ক সমস্যার সমাধান।',
+        introAr: 'استكشاف أخطاء الشبكة وتأخير المزامنة وإصلاحها.',
+        stepsEn: [
+          '1. Verify your Wi-Fi or Cellular connection.',
+          '2. Toggle Airplane mode on for 5 seconds, then off.',
+          '3. Pull down on the screen to trigger manual sync.'
+        ],
+        stepsBn: [
+          '১. আপনার ওয়াইফাই বা মোবাইল ইন্টারনেট কানেকশন চেক করুন।',
+          '২. ফোন ৫ সেকেন্ডের জন্য এয়ারপ্লেন মোড দিয়ে আবার বন্ধ করুন।',
+          '৩. স্ক্রিন নিচে টেনে রিফ্রেশ করুন।'
+        ],
+        stepsAr: [
+          '١. تحقق من اتصال Wi-Fi أو بيانات الجوال.',
+          '٢. شغّل وضع الطيران لمدة ٥ ثوانٍ ثم أوقفه.',
+          '٣. اسحب لأسفل على الشاشة لتشغيل المزامنة اليدوية.'
+        ]
+      }
+    };
+
+    // Navigation & Screen Control
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen-view').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.add('active');
+      }
+
+      // Manage sub-top-bar visibility: Only visible on main tabs (help-center, faq, report)
+      const subTopBar = document.getElementById('sub-top-bar');
+      if (screenId === 'screen-help-center' || screenId === 'screen-faq' || screenId === 'screen-report') {
+        subTopBar.classList.remove('hidden');
+      } else {
+        subTopBar.classList.add('hidden');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      lucide.createIcons();
+    }
+
+    function navigateToMainTab(tabKey) {
+      // tabKey: 'help-center', 'faq', 'report'
+      document.querySelectorAll('.main-tab-btn').forEach(btn => {
+        btn.className = 'main-tab-btn py-3 text-center text-xs sm:text-sm font-semibold transition-all border-b-2 border-transparent text-slate-500 hover:text-slate-900 cursor-pointer';
+      });
+
+      const activeBtn = document.getElementById(`tab-btn-${tabKey}`);
+      if (activeBtn) {
+        activeBtn.className = 'main-tab-btn py-3 text-center text-xs sm:text-sm font-bold transition-all border-b-2 border-indigo-600 text-indigo-600 cursor-pointer';
+      }
+
+      const targetScreen = `screen-${tabKey}`;
+      navigationStack = [targetScreen];
+      showScreen(targetScreen);
+    }
+
+    function navigateBack() {
+      if (navigationStack.length > 1) {
+        navigationStack.pop();
+        const prevScreen = navigationStack[navigationStack.length - 1];
+        showScreen(prevScreen);
+      } else {
+        // If at root of any screen, return to Help Center
+        navigateToMainTab('help-center');
+      }
+    }
+
+    function handleBackButton() {
+      navigateBack();
+    }
+
+    // Screen 4: Topic View Opener
+    function openTopicScreen(topicId) {
+      currentActiveTopicId = topicId;
+      const topic = topicDatabase[topicId];
+      if (!topic) return;
+
+      const title = currentLanguage === 'bn' ? topic.titleBn : (currentLanguage === 'ar' ? topic.titleAr : topic.titleEn);
+      const subtitle = currentLanguage === 'bn' ? topic.subtitleBn : (currentLanguage === 'ar' ? topic.subtitleAr : topic.subtitleEn);
+
+      document.getElementById('topic-screen-title').innerText = title;
+      document.getElementById('topic-screen-subtitle').innerText = subtitle;
+
+      const container = document.getElementById('topic-articles-container');
+      container.innerHTML = topic.articles.map(artId => {
+        const art = articleDatabase[artId];
+        if (!art) return '';
+        const artTitle = currentLanguage === 'bn' ? art.titleBn : (currentLanguage === 'ar' ? art.titleAr : art.titleEn);
+        return `
+          <div
+            onclick="openArticleScreen('${artId}')"
+            class="p-4 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer group"
+          >
+            <span class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+              ${artTitle}
+            </span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all rtl-flip shrink-0"></i>
+          </div>
+        `;
+      }).join('');
+
+      navigationStack.push('screen-topic');
+      showScreen('screen-topic');
+    }
+
+    // Screen 5: Article View Opener
+    function openArticleScreen(articleId) {
+      currentActiveArticleId = articleId;
+      const art = articleDatabase[articleId];
+      if (!art) return;
+
+      const title = currentLanguage === 'bn' ? art.titleBn : (currentLanguage === 'ar' ? art.titleAr : art.titleEn);
+      const intro = currentLanguage === 'bn' ? art.introBn : (currentLanguage === 'ar' ? art.introAr : art.introEn);
+      const steps = currentLanguage === 'bn' ? art.stepsBn : (currentLanguage === 'ar' ? art.stepsAr : art.stepsEn);
+
+      document.getElementById('article-screen-title').innerText = title;
+      document.getElementById('article-screen-intro').innerText = intro;
+
+      const bodyContainer = document.getElementById('article-screen-body');
+      bodyContainer.innerHTML = steps.map(s => `
+        <div class="p-3 bg-slate-50 rounded-xl text-xs sm:text-sm font-medium text-slate-800 border border-slate-100">
+          ${s}
+        </div>
+      `).join('');
+
+      // Reset feedback UI
+      document.getElementById('helpful-actions-group').classList.remove('hidden');
+      document.getElementById('helpful-feedback-msg').classList.add('hidden');
+
+      // Close live search dropdown if open
+      document.getElementById('search-live-dropdown').classList.add('hidden');
+
+      navigationStack.push('screen-article');
+      showScreen('screen-article');
+    }
+
+    // Article Helpful Feedback
+    function recordFeedback(val) {
+      document.getElementById('helpful-actions-group').classList.add('hidden');
+      const msg = document.getElementById('helpful-feedback-msg');
+      msg.innerText = translations[currentLanguage].helpfulFeedbackMsg;
+      msg.classList.remove('hidden');
+    }
+
+    // Search Help Articles Live Functionality
+    function handleSearchArticles(val) {
+      const q = val.toLowerCase().trim();
+      const dropdown = document.getElementById('search-live-dropdown');
+      if (!q) {
+        dropdown.classList.add('hidden');
+        return;
+      }
+
+      const matches = Object.keys(articleDatabase).filter(id => {
+        const a = articleDatabase[id];
+        const combined = (a.titleEn + a.titleBn + a.titleAr + a.introEn + a.introBn + a.introAr).toLowerCase();
+        return combined.includes(q);
+      });
+
+      if (matches.length === 0) {
+        dropdown.innerHTML = `
+          <div class="p-3 text-center text-xs text-slate-400 font-medium">
+            ${currentLanguage === 'bn' ? 'কোনো আর্টিকেল পাওয়া যায়নি।' : (currentLanguage === 'ar' ? 'لم يتم العثور على مقالات.' : 'No articles found.')}
+          </div>
+        `;
+      } else {
+        dropdown.innerHTML = matches.map(id => {
+          const art = articleDatabase[id];
+          const artTitle = currentLanguage === 'bn' ? art.titleBn : (currentLanguage === 'ar' ? art.titleAr : art.titleEn);
+          return `
+            <div onclick="openArticleScreen('${id}')" class="p-2.5 rounded-xl hover:bg-slate-50 flex items-center justify-between cursor-pointer border-b border-slate-50 last:border-0">
+              <span class="text-xs font-bold text-slate-900 truncate pr-2">${artTitle}</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400 shrink-0 rtl-flip"></i>
+            </div>
+          `;
+        }).join('');
+      }
+
+      dropdown.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    // FAQ Accordion Toggle
+    function toggleFaqAccordion(btn) {
+      const item = btn.closest('.faq-item');
+      const answer = item.querySelector('.faq-answer');
+      const icon = item.querySelector('.faq-toggle-icon');
+
+      if (answer.classList.contains('hidden')) {
+        answer.classList.remove('hidden');
+        icon.innerText = '−';
+      } else {
+        answer.classList.add('hidden');
+        icon.innerText = '＋';
+      }
+    }
+
+    // Filter FAQs live
+    function filterFaqList(val) {
+      const q = val.toLowerCase().trim();
+      document.querySelectorAll('.faq-item').forEach(item => {
+        const text = item.innerText.toLowerCase();
+        if (!q || text.includes(q)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // Report a Problem File Handling
+    function handleFileSelected(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        document.getElementById('file-preview-name').innerText = file.name;
+        document.getElementById('file-preview-badge').classList.remove('hidden');
+      }
+    }
+
+    function removeSelectedFile() {
+      document.getElementById('form-file-input').value = '';
+      document.getElementById('file-preview-badge').classList.add('hidden');
+    }
+
+    function handleProblemReportSubmit(e) {
+      e.preventDefault();
+      const code = 'TKT-' + Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('tkt-id-badge').innerText = '#' + code;
+      document.getElementById('solvian-report-form').classList.add('hidden');
+      document.getElementById('report-submission-success').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function resetProblemReportForm() {
+      document.getElementById('solvian-report-form').reset();
+      removeSelectedFile();
+      document.getElementById('solvian-report-form').classList.remove('hidden');
+      document.getElementById('report-submission-success').classList.add('hidden');
+    }
+
+    // Language Modal
+    function openLanguageModal() {
+      const modal = document.getElementById('language-modal');
+      const radio = modal.querySelector(`input[value="${currentLanguage}"]`);
+      if (radio) radio.checked = true;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeLanguageModal() {
+      const modal = document.getElementById('language-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function applySelectedLanguage() {
+      const modal = document.getElementById('language-modal');
+      const selected = modal.querySelector('input[name="lang_select"]:checked');
+      if (selected) {
+        currentLanguage = selected.value;
+        updateUI();
+      }
+      closeLanguageModal();
+    }
+
+    function updateUI() {
+      const t = translations[currentLanguage];
+      
+      // Set direction
+      if (currentLanguage === 'ar') {
+        document.documentElement.setAttribute('dir', 'rtl');
+        document.documentElement.setAttribute('lang', 'ar');
+      } else {
+        document.documentElement.setAttribute('dir', 'ltr');
+        document.documentElement.setAttribute('lang', currentLanguage);
+      }
+
+      // Update static text elements
+      document.getElementById('current-lang-name').innerText = t.langName;
+      document.getElementById('top-bar-title').innerText = t.topTitle;
+
+      const setTxt = (sel, text) => {
+        const el = document.querySelector(sel);
+        if (el) el.innerText = text;
+      };
+
+      setTxt('.txt-subtab-help-center', t.subtabHelpCenter);
+      setTxt('.txt-subtab-faq', t.subtabFaq);
+      setTxt('.txt-subtab-report', t.subtabReport);
+
+      setTxt('.txt-hero-title', t.heroTitle);
+      setTxt('.txt-hero-desc', t.heroDesc);
+      document.getElementById('help-center-search').placeholder = t.searchPlaceholder;
+
+      setTxt('.txt-popular-heading', t.popularHeading);
+      setTxt('.txt-pop-getting-started-title', t.popGettingStartedTitle);
+      setTxt('.txt-pop-getting-started-desc', t.popGettingStartedDesc);
+      setTxt('.txt-pop-account-title', t.popAccountTitle);
+      setTxt('.txt-pop-account-desc', t.popAccountDesc);
+      setTxt('.txt-pop-features-title', t.popFeaturesTitle);
+      setTxt('.txt-pop-features-desc', t.popFeaturesDesc);
+
+      setTxt('.txt-browse-heading', t.browseHeading);
+      setTxt('.txt-browse-privacy-title', t.browsePrivacyTitle);
+      setTxt('.txt-browse-troubleshoot-title', t.browseTroubleshootTitle);
+      setTxt('.txt-browse-app-title', t.browseAppTitle);
+      setTxt('.txt-browse-more-title', t.browseMoreTitle);
+
+      setTxt('.txt-need-more-heading', t.needMoreHeading);
+      setTxt('.txt-need-report-title', t.needReportTitle);
+      setTxt('.txt-need-report-desc', t.needReportDesc);
+
+      setTxt('.txt-faq-main-title', t.faqMainTitle);
+      document.getElementById('faq-search-input').placeholder = t.faqSearchPlaceholder;
+      setTxt('.txt-faq-cat-general', t.faqCatGeneral);
+      setTxt('.txt-faq-cat-account', t.faqCatAccount);
+      setTxt('.txt-faq-cat-troubleshoot', t.faqCatTroubleshoot);
+
+      setTxt('.txt-faq-q1', t.faqQ1);
+      setTxt('.txt-faq-a1', t.faqA1);
+      setTxt('.txt-faq-q2', t.faqQ2);
+      setTxt('.txt-faq-a2', t.faqA2);
+      setTxt('.txt-faq-q3', t.faqQ3);
+      setTxt('.txt-faq-a3', t.faqA3);
+      setTxt('.txt-faq-q4', t.faqQ4);
+      setTxt('.txt-faq-a4', t.faqA4);
+      setTxt('.txt-faq-q5', t.faqQ5);
+      setTxt('.txt-faq-a5', t.faqA5);
+      setTxt('.txt-faq-q6', t.faqQ6);
+      setTxt('.txt-faq-a6', t.faqA6);
+      setTxt('.txt-faq-q7', t.faqQ7);
+      setTxt('.txt-faq-a7', t.faqA7);
+
+      setTxt('.txt-report-main-title', t.reportMainTitle);
+      setTxt('.txt-report-main-subtitle', t.reportMainSubtitle);
+      setTxt('.txt-lbl-problem-type', t.lblProblemType);
+      setTxt('.txt-opt-select-type', t.optSelectType);
+      setTxt('.txt-lbl-what-happened', t.lblWhatHappened);
+      document.getElementById('form-what-happened').placeholder = t.phWhatHappened;
+      setTxt('.txt-lbl-steps', t.lblSteps);
+      document.getElementById('form-steps').placeholder = t.phSteps;
+      setTxt('.txt-lbl-attachment', t.lblAttachment);
+      setTxt('.txt-btn-add-file', t.btnAddFile);
+      setTxt('.txt-lbl-device-info', t.lblDeviceInfo);
+      setTxt('.txt-btn-submit-report', t.btnSubmitReport);
+
+      setTxt('.txt-success-head', t.successHead);
+      setTxt('.txt-success-desc', t.successDesc);
+      setTxt('.txt-success-note', t.successNote);
+      setTxt('.txt-btn-submit-another', t.btnSubmitAnother);
+
+      setTxt('.txt-helpful-prompt', t.helpfulPrompt);
+      setTxt('.txt-helpful-yes', t.helpfulYes);
+      setTxt('.txt-helpful-no', t.helpfulNo);
+      setTxt('.txt-still-need-help', t.stillNeedHelp);
+      setTxt('.txt-still-need-desc', t.stillNeedDesc);
+      setTxt('.txt-action-report-link', t.actionReportLink);
+
+      setTxt('.txt-lang-modal-title', t.langModalTitle);
+      setTxt('.txt-btn-done', t.btnDone);
+
+      // Refresh currently open topic or article if active
+      if (currentActiveTopicId) {
+        const topic = topicDatabase[currentActiveTopicId];
+        if (topic) {
+          document.getElementById('topic-screen-title').innerText = currentLanguage === 'bn' ? topic.titleBn : (currentLanguage === 'ar' ? topic.titleAr : topic.titleEn);
+          document.getElementById('topic-screen-subtitle').innerText = currentLanguage === 'bn' ? topic.subtitleBn : (currentLanguage === 'ar' ? topic.subtitleAr : topic.subtitleEn);
+        }
+      }
+      if (currentActiveArticleId) {
+        const art = articleDatabase[currentActiveArticleId];
+        if (art) {
+          document.getElementById('article-screen-title').innerText = currentLanguage === 'bn' ? art.titleBn : (currentLanguage === 'ar' ? art.titleAr : art.titleEn);
+          document.getElementById('article-screen-intro').innerText = currentLanguage === 'bn' ? art.introBn : (currentLanguage === 'ar' ? art.introAr : art.introEn);
+        }
+      }
+
+      lucide.createIcons();
+    }
+
+    // Click outside search to close live search
+    document.addEventListener('click', (e) => {
+      const searchBox = document.getElementById('help-center-search');
+      const dropdown = document.getElementById('search-live-dropdown');
+      if (searchBox && dropdown && !searchBox.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
+    // Initialize App on DOM Ready
+    window.addEventListener('DOMContentLoaded', () => {
+      updateUI();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
